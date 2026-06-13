@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Premium App Store</title>
+    <style>
+        :root {
+            --ios-blue: #007AFF;
+            --ios-green: #34C759;
+            --ios-orange: #FF9500;
+            --ios-red: #FF3B30;
+            --glass-bg: rgba(255, 255, 255, 0.06);
+            --glass-border: rgba(255, 255, 255, 0.12);
+            --glass-highlight: rgba(255, 255, 255, 0.2);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #020205;
+            font-family: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+            overflow-x: hidden;
+            color: #fff;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 高级液态流体背景 */
+        .fluid-bg {
+            position: fixed;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 30% 20%, #1e3c72 0%, transparent 40%),
+                radial-gradient(circle at 75% 60%, #007AFF 0%, transparent 45%),
+                radial-gradient(circle at 50% 80%, #151528 0%, #020205 100%);
+            background-size: 100% 100%;
+            animation: fluidRotate 25s linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fluidRotate {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.1); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 60px 20px 40px;
+            box-sizing: border-box;
+        }
+
+        /* 头部升级 */
+        header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        header h1 {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin: 0;
+            background: linear-gradient(180deg, #ffffff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        header p {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-top: 8px;
+        }
+
+        /* iOS 标签通用样式 */
+        .badge {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+        }
+        .badge-tutorial { background: rgba(255, 149, 0, 0.2); color: #ffb03a; border: 1px solid rgba(255, 149, 0, 0.3); }
+        .badge-app { background: rgba(0, 122, 255, 0.15); color: #5ac8fa; border: 1px solid rgba(0, 122, 255, 0.25); }
+
+        /* 极致液态玻璃卡片基底 */
+        .liquid-glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px) saturate(210%);
+            -webkit-backdrop-filter: blur(30px) saturate(210%);
+            border-radius: 30px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border: 1px solid var(--glass-border);
+            /* 模拟玻璃外发光与内阴影折射 */
+            box-shadow: 
+                0 4px 30px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px var(--glass-highlight),
+                inset 0 -1px 2px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 玻璃表面的高光流体微光纹理 */
+        .liquid-glass::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 50%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, transparent 100%);
+            pointer-events: none;
+        }
+
+        /* 教程区域重构 */
+        .tutorial-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(255, 149, 0, 0.08);
+            border: 1px solid rgba(255, 149, 0, 0.2);
+        }
+        .tutorial-info h3 { margin: 0; font-size: 17px; font-weight: 700; color: #fff; }
+        .tutorial-info p { margin: 4px 0 0; font-size: 13px; color: rgba(255,255,255,0.5); }
+        
+        .tutorial-btn {
+            background: #FF9500;
+            color: #000;
+            border: none;
+            border-radius: 24px;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tutorial-btn:active { transform: scale(0.94); opacity: 0.9; }
+
+        /* 应用列表卡片 */
+        .card-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .app-meta { display: flex; align-items: center; }
+        
+        /* 图标仿 iOS 原生液态渐变 */
+        .app-icon { 
+            width: 68px; 
+            height: 68px; 
+            border-radius: 16px; 
+            margin-right: 16px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            font-size: 34px; 
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+            position: relative;
+        }
+        .plane-bg { background: linear-gradient(135deg, #2AABEE 0%, #1c75bc 100%); }
+        .vpn-bg { background: linear-gradient(135deg, #34C759 0%, #11998e 100%); }
+        
+        .app-details h2 { margin: 0; font-size: 21px; font-weight: 700; letter-spacing: -0.5px; }
+        .app-details p { margin: 5px 0 0; font-size: 13px; color: rgba(255,255,255,0.5); }
+
+        /* iOS 原生胶囊下载按钮 */
+        .download-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: var(--ios-blue);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+        .download-btn:active {
+            background: #fff;
+            color: #000;
+            transform: scale(0.95);
+        }
+
+        /* 购买卡网区域独立升级 */
+        .shop-container {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+        }
+        .shop-tips {
+            font-size: 12px;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        /* 双卡网并排布局结构 */
+        .shop-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        
+        .shop-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 12px;
+            border-radius: 16px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+        }
+
+        /* 主卡网样式：醒目绿色 */
+        .btn-primary-shop {
+            background: rgba(52, 199, 89, 0.15);
+            border: 1px solid rgba(52, 199, 89, 0.35);
+            color: #34C759;
+        }
+        .btn-primary-shop:active {
+            background: rgba(52, 199, 89, 0.3);
+            transform: scale(0.96);
+        }
+
+        /* 备用卡网样式：次要灰色/毛玻璃色 */
+        .btn-secondary-shop {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255,255,255,0.8);
+        }
+        .btn-secondary-shop:active {
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0.96);
+        }
+
+        /* 弹窗升级：极致毛玻璃折射 */
+        .popup-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            display: none; justify-content: center; align-items: center; z-index: 10000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; } to { opacity: 1; }
+        }
+
+        .popup-content { 
+            position: relative; 
+            width: 88%;
+            max-width: 360px;
+            background: rgba(28, 28, 30, 0.7); 
+            backdrop-filter: blur(40px) saturate(150%);
+            -webkit-backdrop-filter: blur(40px) saturate(150%);
+            border-radius: 32px; 
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.15);
+            transform: scale(0.9);
+            animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes popUp {
+            to { transform: scale(1); }
+        }
+
+        .close-btn { 
+            position: absolute; 
+            top: 12px; 
+            right: 16px; 
+            color: rgba(255,255,255,0.5); 
+            font-size: 24px; 
+            cursor: pointer; 
+            z-index: 10001; 
+            transition: color 0.2s;
+            width: 30px; height: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .close-btn:hover { color: #fff; }
+
+        video { width: 100%; height: auto; display: block; background: #000; }
+    </style>
+</head>
+<body>
+
+<div class="fluid-bg"></div>
+
+<div class="container">
+    <header>
+        <h1>应用中心</h1>
+        <p>Premium Collection</p>
+    </header>
+
+    <div class="liquid-glass tutorial-box">
+        <div class="tutorial-info">
+            <span class="badge badge-tutorial">✦ 新手必看</span>
+            <h3>使用与配置教程</h3>
+            <p>首次安装请先查看此视频</p>
+        </div>
+        <button class="tutorial-btn" onclick="openVideo()">
+            <span>🎬</span>播放
+        </button>
+    </div>
+
+    <div class="liquid-glass">
+        <div class="card-main">
+            <div class="app-meta">
+                <div class="app-icon plane-bg">✈️</div>
+                <div class="app-details">
+                    <span class="badge badge-app">官方安装包</span>
+                    <h2>Telegram</h2>
+                    <p>极致安全的自由通讯</p>
+                </div>
+            </div>
+            <a href="https://pan.xunlei.com/s/VOtNTceK05Lf0q_HEpwGBghZA1" class="download-btn">下载</a>
+        </div>
+        
+        <div class="shop-container">
+            <div class="shop-tips">
+                <span>🛒</span> 没有纸飞机账号？请点击下方购买/注册：
+            </div>
+            <div class="shop-grid">
+                <a href="https://new.818fka.com/shop/KKH011OA" class="shop-btn btn-primary-shop">
+                    <span>⚡</span> 主卡网购买
+                </a>
+                <a href="https://new.818fka.com/shop/KKH011OA" class="shop-btn btn-secondary-shop">
+                    <span>🔄</span> 备用卡网
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="liquid-glass">
+        <div class="card-main">
+            <div class="app-meta">
+                <div class="app-icon vpn-bg">🍵</div>
+                <div class="app-details">
+                    <span class="badge badge-app">网络优化</span>
+                    <h2>绿茶 VPN</h2>
+                    <p>跨越边界，丝滑连接</p>
+                </div>
+            </div>
+            <a href="https://9.lcvpn.sbs/?id=505291048" class="download-btn">去获取</a>
+        </div>
+    </div>
+</div>
+
+<div id="video-popup" class="popup-overlay" onclick="closeVideo()">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <span class="close-btn" onclick="closeVideo()">×</span>
+        <video id="player" controls playsinline>
+            <source src="https://help.tgqqq.com/api.mp4" type="video/mp4">
+        </video>
+    </div>
+</div>
+
+<script>
+    function openVideo() {
+        document.getElementById('video-popup').style.display = 'flex';
+        document.getElementById('player').play();
+    }
+    function closeVideo() {
+        document.getElementById('video-popup').style.display = 'none';
+        const v = document.getElementById('player');
+        v.pause();
+        v.currentTime = 0;
+    }
+</script>
+
+</body>
+</html>
