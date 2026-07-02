@@ -10,7 +10,6 @@
             --ios-green: #34C759;
             --ios-orange: #FF9500;
             --ios-purple: #AF52DE;
-            /* 升级：更高透、更聚光的 iOS 液态玻璃参数 */
             --glass-bg: rgba(255, 255, 255, 0.08);
             --glass-border: rgba(255, 255, 255, 0.18);
             --glass-highlight: rgba(255, 255, 255, 0.3);
@@ -26,7 +25,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 极致多色液态极光背景：专为毛玻璃折射而生 */
+        /* 极致多色液态极光背景 */
         .fluid-bg {
             position: fixed;
             top: -60%; left: -60%; width: 220%; height: 220%;
@@ -51,14 +50,28 @@
             width: 100%;
             max-width: 440px;
             margin: 0 auto;
-            padding: 50px 18px 40px;
+            padding: 50px 18px 110px; /* 留出底部导航栏的空间 */
             box-sizing: border-box;
         }
 
-        /* 头部视觉升级 */
+        /* 页面切换逻辑 */
+        .page-content {
+            display: none;
+            animation: fadeScale 0.35s cubic-bezier(0.1, 0.8, 0.2, 1) forwards;
+        }
+        .page-content.active {
+            display: block;
+        }
+
+        @keyframes fadeScale {
+            from { opacity: 0; transform: scale(0.96) translateY(5px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* 头部视觉 */
         header {
             text-align: center;
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
         header h1 {
             font-size: 34px;
@@ -70,30 +83,8 @@
             -webkit-text-fill-color: transparent;
             text-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
-        
-        /* 页面浏览量计数器 */
-        .view-counter {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 12px;
-            padding: 5px 14px;
-            background: rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        }
-        .view-counter span {
-            color: #5ac8fa;
-            font-weight: 700;
-        }
 
-        /* 极致 iOS 液态玻璃卡片基底 */
+        /* iOS 液态玻璃卡片基底 */
         .liquid-glass {
             background: var(--glass-bg);
             backdrop-filter: blur(40px) saturate(260%);
@@ -102,23 +93,12 @@
             padding: 22px;
             margin-bottom: 20px;
             border: 1px solid var(--glass-border);
-            box-shadow: 
-                0 15px 35px rgba(0, 0, 0, 0.35),
-                inset 0 1px 0px var(--glass-highlight),
-                inset 0 -1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35), inset 0 1px 0px var(--glass-highlight);
             position: relative;
             overflow: hidden;
         }
-        
-        .liquid-glass::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
 
-        /* 标签通用样式 */
+        /* 标签 */
         .badge {
             font-size: 10px;
             font-weight: 700;
@@ -126,63 +106,31 @@
             border-radius: 6px;
             display: inline-block;
             margin-bottom: 6px;
-            letter-spacing: 0.3px;
         }
         .badge-tutorial { background: rgba(255, 149, 0, 0.2); color: #ffb03a; border: 1px solid rgba(255, 149, 0, 0.25); }
         .badge-app { background: rgba(255, 255, 255, 0.1); color: #fff; border: 1px solid rgba(255, 255, 255, 0.15); }
 
-        /* 教程区域样式 */
-        .tutorial-box {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+        /* 教程区域 */
+        .tutorial-box { display: flex; align-items: center; justify-content: space-between; }
         .tutorial-info h3 { margin: 0; font-size: 16px; font-weight: 700; }
         .tutorial-info p { margin: 4px 0 0; font-size: 12px; color: rgba(255,255,255,0.5); }
         
         .tutorial-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            border-radius: 20px;
-            padding: 9px 16px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 4px 12px rgba(255,255,255,0.2);
+            background: #fff; color: #000; border: none; border-radius: 20px;
+            padding: 9px 16px; font-size: 13px; font-weight: 700; cursor: pointer;
+            display: flex; align-items: center; gap: 4px; box-shadow: 0 4px 12px rgba(255,255,255,0.2);
             transition: all 0.2s ease;
         }
-        .tutorial-btn:active { transform: scale(0.95); opacity: 0.9; }
+        .tutorial-btn:active { transform: scale(0.95); }
 
-        /* 主体应用列表布局 */
-        .app-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4px 0;
-        }
-        /* 应用间的分隔线 */
-        .app-separator {
-            height: 1px;
-            background: rgba(255,255,255,0.08);
-            margin: 16px 0;
-        }
-
+        /* 应用列表布局 */
+        .app-item { display: flex; align-items: center; justify-content: space-between; padding: 4px 0; }
+        .app-separator { height: 1px; background: rgba(255,255,255,0.08); margin: 16px 0; }
         .app-meta { display: flex; align-items: center; }
         
-        /* 仿 iOS 原生液态渐变图标 */
         .app-icon { 
-            width: 62px; 
-            height: 62px; 
-            border-radius: 14px; 
-            margin-right: 14px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            font-size: 30px; 
+            width: 62px; height: 62px; border-radius: 14px; margin-right: 14px; 
+            display: flex; justify-content: center; align-items: center; font-size: 30px; 
             box-shadow: 0 8px 18px rgba(0,0,0,0.35), inset 0 1px 1px rgba(255,255,255,0.3);
         }
         .plane-bg { background: linear-gradient(135deg, #2AF598 0%, #009EFD 100%); }
@@ -191,115 +139,121 @@
         .app-details h2 { margin: 0; font-size: 19px; font-weight: 700; letter-spacing: -0.3px; }
         .app-details p { margin: 4px 0 0; font-size: 12px; color: rgba(255,255,255,0.5); }
 
-        /* iOS 原生高亮胶囊下载按钮 */
         .download-btn {
-            background: rgba(255, 255, 255, 0.14);
-            color: #fff;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 7px 18px;
-            border-radius: 18px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.14); color: #fff; border: 1px solid rgba(255,255,255,0.1);
+            padding: 7px 18px; border-radius: 18px; font-size: 13px; font-weight: 700; text-decoration: none;
+            transition: all 0.2s ease; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
         }
-        .download-btn:active {
-            background: #inherit;
-            color: var(--ios-blue);
-            transform: scale(0.94);
-        }
+        .download-btn:active { transform: scale(0.94); color: var(--ios-blue); }
 
-        /* 独立出来的：卡网专区（黄金底座卡片） */
-        .shop-section {
-            background: rgba(52, 199, 89, 0.05);
-            border: 1px solid rgba(52, 199, 89, 0.25);
-            box-shadow: 0 15px 35px rgba(52, 199, 89, 0.1);
+        /* 卡网专区单独页样式 */
+        .shop-header { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #34C759; margin-bottom: 20px; justify-content: center;}
+        .shop-vertical-grid { display: flex; flex-direction: column; gap: 16px; }
+        .shop-card-btn {
+            display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px;
+            border-radius: 20px; text-decoration: none; transition: all 0.25s ease; text-align: center;
         }
-        .shop-header {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            color: #34C759;
-            margin-bottom: 14px;
+        .shop-card-btn span:first-child { font-size: 32px; margin-bottom: 8px; }
+        .shop-card-btn .btn-title { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .shop-card-btn .btn-desc { font-size: 12px; opacity: 0.7; }
+
+        .btn-primary-card {
+            background: linear-gradient(135deg, rgba(52, 199, 89, 0.2) 0%, rgba(40, 167, 69, 0.05) 100%);
+            border: 1px solid rgba(52, 199, 89, 0.4); color: #34C759;
+            box-shadow: 0 8px 25px rgba(52, 199, 89, 0.15);
         }
+        .btn-primary-card:active { transform: scale(0.97); background: rgba(52, 199, 89, 0.3); }
+
+        .btn-secondary-card {
+            background: linear-gradient(135deg, rgba(0, 122, 255, 0.15) 0%, rgba(0, 122, 255, 0.03) 100%);
+            border: 1px solid rgba(0, 122, 255, 0.3); color: #007AFF;
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.15);
+        }
+        .btn-secondary-card:active { transform: scale(0.97); background: rgba(0, 122, 255, 0.25); }
+
+        /* 价格表专区样式 */
+        .price-intro { font-size: 13px; color: rgba(255,255,255,0.5); text-align: center; margin-bottom: 16px; }
+        .price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .price-card {
+            background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 18px; padding: 14px; display: flex; flex-direction: column; align-items: center;
+            justify-content: center; text-align: center; position: relative;
+        }
+        .price-card .flag-title { font-size: 14px; font-weight: 600; color: rgba(255,255,255,0.9); }
+        .price-card .code { font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 2px; }
+        .price-card .cost { font-size: 18px; font-weight: 800; color: #ff9500; margin-top: 8px; font-family: "SF Pro Display", sans-serif; }
         
-        .shop-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
+        /* 特殊双向号高亮 */
+        .price-card.special {
+            background: linear-gradient(135deg, rgba(175, 82, 222, 0.15) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid rgba(175, 82, 222, 0.35);
         }
-        
-        .shop-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 13px;
-            border-radius: 16px;
-            font-size: 13px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
+        .price-card.special .flag-title { color: #d696ff; }
+        .price-card.special .cost { color: #df9eff; }
 
-        .btn-primary-shop {
-            background: linear-gradient(180deg, #34C759 0%, #28a745 100%);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(52, 199, 89, 0.3);
-        }
-        .btn-primary-shop:active { transform: scale(0.96); }
-
-        .btn-secondary-shop {
-            background: rgba(255, 255, 255, 0.06);
+        /* ================= iOS 16+ 高级级液态玻璃底部导航栏 ================= */
+        .tab-bar {
+            position: fixed; bottom: 16px; left: 16px; right: 16px; height: 76px;
+            background: rgba(25, 25, 35, 0.35); 
+            backdrop-filter: blur(32px) saturate(210%);
+            -webkit-backdrop-filter: blur(32px) saturate(210%);
+            border-radius: 28px;
             border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #fff;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
+            display: flex; justify-content: space-around; align-items: center;
+            z-index: 9999; 
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255,255,255,0.2);
+            padding-bottom: env(safe-area-inset-bottom);
         }
-        .btn-secondary-shop:active { background: rgba(255, 255, 255, 0.15); transform: scale(0.96); }
+        .tab-item {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: rgba(255, 255, 255, 0.45); text-decoration: none; font-size: 11px; font-weight: 600;
+            width: 30%; height: 100%; transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); cursor: pointer;
+            position: relative;
+        }
+        
+        /* 圆形扁平化图标底座 */
+        .tab-item .tab-icon-box {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; margin-bottom: 4px;
+            background: rgba(255, 255, 255, 0.0);
+            border: 1px solid transparent;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        /* 激活时的动态样式 */
+        .tab-item.active { color: #fff; font-weight: 700; }
+        .tab-item.active .tab-icon-box {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px) scale(1.06);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 为每个按钮定制高亮渐变光 */
+        .tab-item.active:nth-child(1) .tab-icon-box { color: var(--ios-blue); text-shadow: 0 0 10px rgba(0,122,255,0.6); }
+        .tab-item.active:nth-child(2) .tab-icon-box { color: var(--ios-green); text-shadow: 0 0 10px rgba(52,199,89,0.6); }
+        .tab-item.active:nth-child(3) .tab-icon-box { color: var(--ios-orange); text-shadow: 0 0 10px rgba(255,149,0,0.6); }
 
-        /* 弹窗升级：极致毛玻璃折射 */
+        /* 弹窗升级 */
         .popup-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            display: none; justify-content: center; align-items: center; z-index: 10000;
-            animation: fadeIn 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+            display: none; justify-content: center; align-items: center; z-index: 10000; animation: fadeIn 0.3s ease;
         }
-
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
         .popup-content { 
-            position: relative; 
-            width: 88%; max-width: 360px;
-            background: rgba(30, 30, 35, 0.6); 
-            backdrop-filter: blur(40px) saturate(180%);
-            -webkit-backdrop-filter: blur(40px) saturate(180%);
-            border-radius: 28px; 
-            overflow: hidden;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.2);
-            border: 1px solid rgba(255,255,255,0.15);
-            transform: scale(0.9);
-            animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            position: relative; width: 88%; max-width: 360px; background: rgba(30, 30, 35, 0.6); 
+            backdrop-filter: blur(40px) saturate(180%); -webkit-backdrop-filter: blur(40px) saturate(180%);
+            border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.15); transform: scale(0.9); animation: popUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
-
         @keyframes popUp { to { transform: scale(1); } }
-
         .close-btn { 
-            position: absolute; top: 12px; right: 16px; 
-            color: rgba(255,255,255,0.5); font-size: 22px; cursor: pointer; 
-            z-index: 10001; width: 28px; height: 28px;
-            background: rgba(255,255,255,0.08); border-radius: 50%;
+            position: absolute; top: 12px; right: 16px; color: rgba(255,255,255,0.5); font-size: 22px; cursor: pointer; 
+            z-index: 10001; width: 28px; height: 28px; background: rgba(255,255,255,0.08); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
         }
-        .close-btn:hover { color: #fff; background: rgba(255,255,255,0.15); }
         video { width: 100%; height: auto; display: block; background: #000; }
     </style>
 </head>
@@ -309,65 +263,136 @@
 
 <div class="container">
     <header>
-        <h1>应用中心</h1>
-        <div class="view-counter">
-            👀 实时浏览量: <span id="view-count">0</span>
-        </div>
+        <h1 id="page-title">应用中心</h1>
     </header>
 
-    <div class="liquid-glass tutorial-box">
-        <div class="tutorial-info">
-            <span class="badge badge-tutorial">✦ 新手指南</span>
-            <h3>使用与配置教程</h3>
-            <p>首次使用网络或应用请先观看</p>
+    <div id="page-home" class="page-content active">
+        <div class="liquid-glass tutorial-box">
+            <div class="tutorial-info">
+                <span class="badge badge-tutorial">✦ 新手指南</span>
+                <h3>使用与配置教程</h3>
+                <p>首次使用网络或应用请先观看</p>
+            </div>
+            <button class="tutorial-btn" onclick="openVideo()">
+                <span>🎬</span>播放
+            </button>
         </div>
-        <button class="tutorial-btn" onclick="openVideo()">
-            <span>🎬</span>播放
-        </button>
+
+        <div class="liquid-glass">
+            <div class="app-item">
+                <div class="app-meta">
+                    <div class="app-icon plane-bg">✈️</div>
+                    <div class="app-details">
+                        <span class="badge badge-app">官方包</span>
+                        <h2>Telegram</h2>
+                        <p>极致安全的自由通讯</p>
+                    </div>
+                </div>
+                <a href="https://pan.xunlei.com/s/VOtNTceK05Lf0q_HEpwGBghZA1" class="download-btn">下载</a>
+            </div>
+            
+            <div class="app-separator"></div>
+            
+            <div class="app-item">
+                <div class="app-meta">
+                    <div class="app-icon vpn-bg">🍵</div>
+                    <div class="app-details">
+                        <span class="badge badge-app">专属优化</span>
+                        <h2>绿茶 VPN</h2>
+                        <p>跨越边界，丝滑连接</p>
+                    </div>
+                </div>
+                <a href="https://9.lcvpn.sbs/?id=505291048" class="download-btn">去获取</a>
+            </div>
+        </div>
     </div>
 
-    <div class="liquid-glass">
-        <div class="app-item">
-            <div class="app-meta">
-                <div class="app-icon plane-bg">✈️</div>
-                <div class="app-details">
-                    <span class="badge badge-app">官方包</span>
-                    <h2>Telegram</h2>
-                    <p>极致安全的自由通讯</p>
-                </div>
+    <div id="page-shop" class="page-content">
+        <div class="liquid-glass">
+            <div class="shop-header">
+                <span>🛒</span> 纸飞机账号全自动自助下单专区
             </div>
-            <a href="https://pan.xunlei.com/s/VOtNTceK05Lf0q_HEpwGBghZA1" class="download-btn">下载</a>
-        </div>
-        
-        <div class="app-separator"></div>
-        
-        <div class="app-item">
-            <div class="app-meta">
-                <div class="app-icon vpn-bg">🍵</div>
-                <div class="app-details">
-                    <span class="badge badge-app">专属优化</span>
-                    <h2>绿茶 VPN</h2>
-                    <p>跨越边界，丝滑连接</p>
-                </div>
+            <div class="shop-vertical-grid">
+                <a href="https://new.818fka.com/shop/KKH011OA" class="shop-card-btn btn-primary-card" target="_blank">
+                    <span>⚡</span>
+                    <div class="btn-title">主卡网购买渠道</div>
+                    <div class="btn-desc">快速稳定，首选下单通道</div>
+                </a>
+                <a href="https://new.918faka.cn/shop/1K2DG5UK" class="shop-card-btn btn-secondary-card" target="_blank">
+                    <span>🔄</span>
+                    <div class="btn-title">备用卡网渠道</div>
+                    <div class="btn-desc">如主卡网维护，请使用此通道</div>
+                </a>
             </div>
-            <a href="https://9.lcvpn.sbs/?id=505291048" class="download-btn">去获取</a>
         </div>
     </div>
 
-    <div class="liquid-glass shop-section">
-        <div class="shop-header">
-            <span>🛒</span> 还没有纸飞机账号？前往卡网购买/注册：
-        </div>
-        <div class="shop-grid">
-            <a href="https://new.818fka.com/shop/KKH011OA" class="shop-btn btn-primary-shop">
-                <span>⚡</span> 主卡网购买
-            </a>
-            <a href="https://new.918faka.cn/shop/1K2DG5UK" class="shop-btn btn-secondary-shop">
-                <span>🔄</span> 备用渠道
-            </a>
+    <div id="page-prices" class="page-content">
+        <div class="price-intro">各国家地区/号码类型自助零售价格明细</div>
+        <div class="price-grid">
+            <div class="price-card special">
+                <div class="flag-title">👑 双向号</div>
+                <div class="code">专属限制解除</div>
+                <div class="cost">￥2.5</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇺🇸 美国号</div>
+                <div class="code">+1</div>
+                <div class="cost">￥4.5</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇮🇳 印度号</div>
+                <div class="code">+91</div>
+                <div class="cost">￥3.5</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇨🇴 哥伦比亚号</div>
+                <div class="code">+57</div>
+                <div class="cost">￥4</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇬🇧 英国号</div>
+                <div class="code">+44</div>
+                <div class="cost">￥10</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇨🇳 中国号</div>
+                <div class="code">+86</div>
+                <div class="cost">￥9</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇲🇷 毛里塔尼亚号</div>
+                <div class="code">+222</div>
+                <div class="cost">￥12</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇹🇭 泰国号</div>
+                <div class="code">+666</div>
+                <div class="cost">￥15</div>
+            </div>
+            <div class="price-card">
+                <div class="flag-title">🇫🇷 法国号</div>
+                <div class="code">+33</div>
+                <div class="cost">￥15</div>
+            </div>
         </div>
     </div>
 </div>
+
+<nav class="tab-bar">
+    <div class="tab-item active" onclick="switchTab('home', '应用中心')">
+        <div class="tab-icon-box">🏠</div>
+        <span>主页</span>
+    </div>
+    <div class="tab-item" onclick="switchTab('shop', '卡网中心')">
+        <div class="tab-icon-box">🛒</div>
+        <span>卡网</span>
+    </div>
+    <div class="tab-item" onclick="switchTab('prices', '实时价格表')">
+        <div class="tab-icon-box">📊</div>
+        <span>价格表</span>
+    </div>
+</nav>
 
 <div id="video-popup" class="popup-overlay" onclick="closeVideo()">
     <div class="popup-content" onclick="event.stopPropagation()">
@@ -379,24 +404,27 @@
 </div>
 
 <script>
-    // 动态模拟浏览量计数器
-    function updateViewCounter() {
-        const baseViews = 1024 // 设定一个豪华基础量
-        let currentViews = localStorage.getItem('premium_store_views');
+    // 多页切换的核心逻辑
+    function switchTab(pageId, titleText) {
+        // 更新所有 Tab 状态
+        const tabs = document.querySelectorAll('.tab-item');
+        tabs.forEach(tab => tab.classList.remove('active'));
         
-        if (!currentViews) {
-            currentViews = baseViews + 1;
-        } else {
-            currentViews = parseInt(currentViews) + 1;
-        }
-        
-        localStorage.setItem('premium_store_views', currentViews);
-        document.getElementById('view-count').innerText = currentViews.toLocaleString();
-    }
+        // 高亮选中 Tab
+        const activeIdx = pageId === 'home' ? 0 : (pageId === 'shop' ? 1 : 2);
+        tabs[activeIdx].classList.add('active');
 
-    window.onload = function() {
-        updateViewCounter();
-    };
+        // 隐藏所有页面，显示选中页
+        const pages = document.querySelectorAll('.page-content');
+        pages.forEach(page => page.classList.remove('active'));
+        document.getElementById('page-' + pageId).classList.add('active');
+
+        // 动态更改大标题
+        document.getElementById('page-title').innerText = titleText;
+        
+        // 丝滑滚动到顶部
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
     function openVideo() {
         document.getElementById('video-popup').style.display = 'flex';
